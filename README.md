@@ -13,5 +13,4 @@ Conditions are currently: Mostly Cloudy.
 What you should expect: Partly cloudy throughout the day.
 
 Weather was added to your weather tracking file, weather.txt
-$
 ```
