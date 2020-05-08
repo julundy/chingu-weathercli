@@ -4,7 +4,6 @@ require("colors");
 const axios = require("axios");
 const mapboxApiGeocodeEndpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 const service = require("./service");
-const peopleObject = require("./person.json");
 
 const args = require("yargs")
   .usage("Usage: $0 <location> [options]")
@@ -12,42 +11,41 @@ const args = require("yargs")
   .help("h")
   .alias("h", "help").argv;
 
-const validateArgs = () => {
+function validateArgs() {
   if (args._.length !== 1) {
     throw new Error("args are incorrect".red);
   } else {
     return args._[0];
   }
-};
+}
 
-const getLocation = (searchTerm) => {
-  axios
-    .get(mapboxApiGeocodeEndpoint + `/${searchTerm}.json`, {
-      params: {
-        access_token: process.env.MAPBOX_TOKEN,
-      },
-    })
-    .then((response) => {
-      console.log("features are" + response.data.features);
-      return response.data.features[0];
-    })
-    .catch((error) => {
-      console.log(error);
-      throw new Error("error on call to mapbox");
-    });
-};
-
-const weatherOutput = () => {
+async function getLocations(searchTerm) {
   try {
-    const place = validateArgs();
-    const location = getLocation(place);
-    const outputString = "weather output: ".blue.bgWhite;
-    return outputString + place + " is at " + location;
-  } catch (e) {
-    return "error: " + e;
+    const response = await axios.get(
+      mapboxApiGeocodeEndpoint + `/${searchTerm}.json`,
+      {
+        params: {
+          access_token: process.env.MAPBOX_TOKEN,
+        },
+      }
+    );
+
+    if (!response.data.features)
+      throw new Error("no features in response data");
+    return response.data.features;
+  } catch (error) {
+    console.error(error);
   }
-};
+}
 
-// console.log("person is " + peopleObject.people.person.favoriteFoods[1]);
+async function weatherOutput() {
+  const outputString = "weather output: ".blue.bgWhite;
+  const place = validateArgs();
+  const location = await getLocations(place);
 
-console.log(weatherOutput());
+  const locationLatLong = location[0].center;
+
+  console.log(locationLatLong);
+}
+
+weatherOutput();
