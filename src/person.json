@@ -1,0 +1,9 @@
+{
+  "people": {
+    "person": {
+      "name": "jimbob",
+      "profession": "janitor",
+      "favoriteFoods": ["pizza", "burgers"]
+    }
+  }
+}
