@@ -2,7 +2,6 @@ require("dotenv").config();
 require("colors");
 
 const axios = require("axios");
-const mapboxApiGeocodeEndpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places`;
 const service = require("./service");
 
 const args = require("yargs")
@@ -22,7 +21,8 @@ function validateArgs() {
 async function getLocations(searchTerm) {
   try {
     const response = await axios.get(
-      mapboxApiGeocodeEndpoint + `/${searchTerm}.json`,
+      "https://api.mapbox.com/geocoding/v5/mapbox.places" +
+        `/${searchTerm}.json`,
       {
         params: {
           access_token: process.env.MAPBOX_TOKEN,
@@ -38,14 +38,37 @@ async function getLocations(searchTerm) {
   }
 }
 
+async function getWeather(lat, lon) {
+  try {
+    const response = await axios.get(
+      "https://api.openweathermap.org/data/2.5/onecall",
+      {
+        params: {
+          lat: lat,
+          lon: lon,
+          exclude: '["minutely","hourly"]',
+          appid: process.env.OPENWEATHER_KEY,
+        },
+      }
+    );
+    if (!response.data) {
+      throw new Error("no data in response");
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 async function weatherOutput() {
   const outputString = "weather output: ".blue.bgWhite;
   const place = validateArgs();
   const location = await getLocations(place);
-
-  const locationLatLong = location[0].center;
-
-  console.log(locationLatLong);
+  const lat = location[0].center[1];
+  const lon = location[0].center[0];
+  console.log(location[0]);
+  const weather = await getWeather(lat, lon);
+  console.log(weather);
 }
 
 weatherOutput();
