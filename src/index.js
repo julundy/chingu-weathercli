@@ -72,3 +72,5 @@ async function weatherOutput() {
 }
 
 weatherOutput();
+
+module.exports = weatherOutput;
