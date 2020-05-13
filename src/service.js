@@ -21,8 +21,8 @@ async function getLocations(searchTerm) {
       }
     );
 
-    if (!response.data.features)
-      throw new Error("no features in response data");
+    if (!response.data || !response.data.features)
+      throw new Error("error calling mapbox api");
 
     return response.data.features;
   } catch (error) {

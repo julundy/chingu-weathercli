@@ -38,7 +38,7 @@ async function getLocations(searchTerm) {
   }
 }
 
-async function getWeather(lat, lon) {
+async function getWeather(lat, lon, unit = "metric") {
   try {
     const response = await axios.get(
       "https://api.openweathermap.org/data/2.5/onecall",
@@ -48,6 +48,7 @@ async function getWeather(lat, lon) {
           lon: lon,
           exclude: '["minutely","hourly"]',
           appid: process.env.OPENWEATHER_KEY,
+          units: unit,
         },
       }
     );
@@ -60,15 +61,52 @@ async function getWeather(lat, lon) {
   }
 }
 
+function parseWeather(placeName, weather) {
+  if (!weather || !weather.current || !weather.daily.length) {
+    throw new Error("weather data is incomplete");
+  }
+  return {
+    placeName: placeName,
+    currentTemp: weather.current.temp,
+    currentWeather: weather.current.weather[0].description,
+    dayWeather: weather.daily[0].weather[0].description,
+  };
+}
+
+function createOutputString(weatherData) {
+  return (
+    "Current temperature in " +
+    weatherData.placeName +
+    " is " +
+    weatherData.currentTemp +
+    ".\n" +
+    "Conditions are currently: " +
+    weatherData.currentWeather +
+    ".\n" +
+    "What you should expect: " +
+    weatherData.dayWeather +
+    " throughout the day." +
+    "\n\n" +
+    "Wweather was added to your weather tracking file, weather.txt"
+  );
+}
+
 async function weatherOutput() {
-  const outputString = "weather output: ".blue.bgWhite;
-  const place = validateArgs();
-  const location = await getLocations(place);
-  const lat = location[0].center[1];
-  const lon = location[0].center[0];
-  console.log(location[0]);
-  const weather = await getWeather(lat, lon);
-  console.log(weather);
+  try {
+    const outputString = "weather output: ".blue.bgWhite;
+    const place = validateArgs();
+    const location = await getLocations(place);
+    const placeName = location[0].place_name;
+    const lat = location[0].center[1];
+    const lon = location[0].center[0];
+    const weather = await getWeather(lat, lon);
+    console.log(weather);
+    const weatherData = parseWeather(placeName, weather);
+    const weatherOutput = createOutputString(weatherData);
+    console.log(weatherOutput);
+  } catch (error) {
+    console.log("Error: " + error.message + " node index.js -h for info");
+  }
 }
 
 weatherOutput();
