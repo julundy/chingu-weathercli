@@ -52,7 +52,7 @@ async function weatherOutput() {
     const parsedArgs = service.parseArgs(args);
     const weatherData = await service.retrieveWeatherData(parsedArgs);
     console.log(service.createOutputString(weatherData));
-    service.writeToFile(service.createOutputString(weatherData, true));
+    await service.writeToFile(service.createOutputString(weatherData, true));
   } catch (error) {
     console.log(`Error: ${error.message.red} node index.js -h for info`);
   }
