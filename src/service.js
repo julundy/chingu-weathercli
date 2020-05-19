@@ -59,20 +59,25 @@ function createOutputString(weatherData, toFile = false) {
   };
 
   const thirdLineDetail = () => {
+    const tempHighColor = tempColor(
+      weatherData.dayHigh,
+      weatherData.isFahrenheit
+    );
+    const tempLowColor = tempColor(
+      weatherData.dayLow,
+      weatherData.isFahrenheit
+    );
+
     return weatherData.detailed
       ? ` with a high of ${
           toFile
             ? weatherData.dayHigh
-            : weatherData.dayHigh.toString()[
-                tempColor(weatherData.dayHigh, weatherData.isFahrenheit)
-              ]
-        } and a low of ${
+            : weatherData.dayHigh.toString()[tempHighColor]
+        }${toFile ? tempType : tempType[tempHighColor]} and a low of ${
           toFile
             ? weatherData.dayLow
-            : weatherData.dayLow.toString()[
-                tempColor(weatherData.dayLow, weatherData.isFahrenheit)
-              ]
-        }`
+            : weatherData.dayLow.toString()[tempLowColor]
+        }${toFile ? tempType : tempType[tempLowColor]}`
       : "";
   };
   const thirdLine = () => {
@@ -85,7 +90,7 @@ function createOutputString(weatherData, toFile = false) {
     firstLine(),
     secondLine(),
     thirdLine(),
-    "------------------------------------------\n",
+    "------------------------------------------",
   ].join("\n");
 }
 
@@ -93,7 +98,7 @@ const tempColor = (temp, isFahrenheit) => {
   let weatherTempColor;
 
   if (isFahrenheit) {
-    if (temp > 90) {
+    if (temp > 86) {
       weatherTempColor = "red";
     } else if (temp < 40) {
       weatherTempColor = "blue";
