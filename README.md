@@ -6,7 +6,7 @@ Weather CLI for Solo pre-work project
 
 WeatherCli is a NodeJS script that receives a location and either Fahrenheit or Celsius and outputs current weather data and forecast
 
-*Example from within src folder*
+*Example*
 
 ```
 node app.js new york -f
@@ -29,7 +29,7 @@ Create an environment (.env) file in the project root. This file will need three
 
 ## Parameters
 
-```app.js <location> [options]```
+```node app.js <location> [options]```
 
 - **location (required)**: (String) The name of the location. This can be multiple words, and if the Mapbox location service cannot find it, an  error will be returned. Please note that search terms are across the globe, so if the returned location is not what was intended, use a more specific name.
 -  **-f or --Fahrenheit**: To view temperatures in Fahrenheit, either this or Celsius options are required.

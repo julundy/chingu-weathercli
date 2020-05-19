@@ -4,6 +4,8 @@ const axios = require("axios");
 
 async function getWeather(lat, lon, unit) {
   try {
+    if (process.env.OPENWEATHER_KEY.length == 0)
+      throw new Error("No OPENWEATHER_KEY found");
     const response = await axios.get(
       "https://api.openweathermap.org/data/2.5/onecall",
       {
@@ -23,7 +25,7 @@ async function getWeather(lat, lon, unit) {
     }
     return response.data;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(`Error calling Weather API: ${error.message}`);
   }
 }
 

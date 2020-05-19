@@ -12,6 +12,8 @@ const topLocation = (location) => {
 
 async function getTopLocation(searchTerm) {
   try {
+    if (process.env.MAPBOX_TOKEN.length == 0)
+      throw new Error("No MAPBOX_TOKEN found");
     const response = await axios.get(
       "https://api.mapbox.com/geocoding/v5/mapbox.places" +
         `/${searchTerm}.json`,
@@ -28,7 +30,7 @@ async function getTopLocation(searchTerm) {
       );
     return topLocation(response.data.features);
   } catch (error) {
-    throw Error(error);
+    throw Error(`Error calling map API: ${error.message}`);
   }
 }
 
