@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const service = require("./service");
+const service = require("./src/service");
 
 const args = require("yargs")
   .usage("Usage: $0 <location> [options]")
