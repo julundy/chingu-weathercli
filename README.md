@@ -6,7 +6,7 @@ Weather CLI for Solo pre-work project
 
 WeatherCli is a NodeJS script that receives a location and either Fahrenheit or Celsius and outputs current weather data and forecast
 
-*Example from within src folder*
+*Example*
 
 ```
 node app.js new york -f
