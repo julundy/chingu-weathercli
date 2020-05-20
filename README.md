@@ -6,17 +6,12 @@ Weather CLI for Solo pre-work project
 
 WeatherCli is a NodeJS script that receives a location and either Fahrenheit or Celsius and outputs current weather data and forecast
 
-*Example*
+## Sample Usage
 
-```
-node app.js new york -f
-------------------------------------------
-Current temperature in New York, New York, United States is 61.92F.
-Conditions are currently: clear sky.
-What you should expect: clear sky throughout the day.
-------------------------------------------
-Weather was added to your weather tracking file, weather.txt 
-```
+![Sample 1](https://julundy-github-images.s3-us-west-1.amazonaws.com/chingucli-1.png)
+
+![Sample 2](https://julundy-github-images.s3-us-west-1.amazonaws.com/chingucli-2.png)
+
 ## Prerequisites
 
 You will need Node and NPM installed on your machine before running the script. Download and installation instructions are at https://www.npmjs.com/get-npm. Once installed, ```npm i``` in the project directory.
