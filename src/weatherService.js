@@ -25,7 +25,9 @@ async function getWeather(lat, lon, unit) {
     }
     return response.data;
   } catch (error) {
-    throw new Error(`Error calling Weather API: ${error.message}`);
+    throw new Error(
+      `Error calling Weather API: ${error.message} -> ${error.response.data.message}`
+    );
   }
 }
 

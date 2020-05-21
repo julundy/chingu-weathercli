@@ -30,7 +30,9 @@ async function getTopLocation(searchTerm) {
       );
     return topLocation(response.data.features);
   } catch (error) {
-    throw Error(`Error calling map API: ${error.message}`);
+    throw Error(
+      `Error calling map API: ${error.message} -> ${error.response.data.message}`
+    );
   }
 }
 
